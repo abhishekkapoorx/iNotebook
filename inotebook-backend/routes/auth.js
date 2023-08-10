@@ -99,13 +99,13 @@ router.post('/login/', [
 
 
 // ROUTE 3: Get loggedin user details using post request on /api/auth/getuser
-router.post('/getuser/', fetchuser , async (req, res) => {
+router.post('/getuser/', fetchuser, async (req, res) => {
     try {
         const userId = req.user.id
         const user = await User.findById(userId).select('-password').exec()
         res.send(user)
     } catch (error) {
-        res.status(500).json({error: "Internal Server Error"})
+        res.status(500).json({ error: "Internal Server Error" })
     }
 })
 
