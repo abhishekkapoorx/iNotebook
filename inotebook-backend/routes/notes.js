@@ -34,7 +34,7 @@ router.post('/addnote', fetchuser, [
 })
 
 // ROUTE 3: Update existing notes using PUT: '/api/notes/updatenote. Login required
-router.put('/updatenote', fetchuser, [
+router.put('/updatenote/:id', fetchuser, [
     body('title', 'Enter a valid title').isLength({ min: 3 }),
     body('description', 'Description must be atleast 5 characters long').isLength({ min: 3 }),
 ], async (req, res) => {
@@ -59,8 +59,33 @@ router.put('/updatenote', fetchuser, [
                 return res.status(401).send("Not Allowed")
             }
 
-            note = await Notes.findByIdAndUpdate(req.params.id, { $set: newNote }, { new: true })
-            return res.send({ note })
+            updatedNote = await Notes.findByIdAndUpdate(req.params.id, { $set: newNote }, { new: true }).exec()
+            return res.send({ updatedNote })
+        } catch (error) {
+            console.log(error)
+            return res.status(500).json({ error: error })
+        }
+    } else {
+        return res.send({ errors: result.array() });
+    }
+})
+
+// ROUTE 3: Update existing notes using PUT: '/api/notes/deletenote. Login required
+router.delete('/deletenote/:id', fetchuser, async (req, res) => {
+
+    // Check for errors and return errors if they exists
+    const result = validationResult(req);
+    if (result.isEmpty()) {
+        try {
+            // Find a note by its ID
+            const note = await Notes.findById(req.params.id).exec()
+            if (!note) { res.status(404).send("Not Found") }
+            if (note.user.toString() !== req.user.id) {
+                return res.status(401).send("Not Allowed")
+            }
+
+            deletedNote = await Notes.findByIdAndDelete(req.params.id).exec()
+            return res.send({"Success": "Note has been deleted", deletedNote })
         } catch (error) {
             console.log(error)
             return res.status(500).json({ error: error })
