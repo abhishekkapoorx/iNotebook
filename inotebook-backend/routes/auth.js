@@ -43,12 +43,14 @@ router.post('/createuser/', [
                 }
                 const authToken = jwt.sign(payload, JWT_SECRET)
                 // console.log(jwtData);
-                return res.json({ authToken })
+                const success = true;
+                return res.json({ success, authToken })
             }
 
         } catch (error) {
             console.log(error)
-            return res.status(500).json({ error: error })
+            const success = false;
+            return res.status(500).json({ success, error })
         }
     } else {
         return res.send({ errors: result.array() });
@@ -85,12 +87,15 @@ router.post('/login/', [
                         }
                     }
                     const authToken = jwt.sign(payload, JWT_SECRET)
-                    return res.json({ authToken })
+
+                    const success = true;
+                    return res.json({ success, authToken })
                 }
             }
 
         } catch (error) {
-            return res.status(500).json({ error })
+            const success = false;
+            return res.status(500).json({ success, error })
         }
     } else {
         return res.send({ errors: result.array() });
