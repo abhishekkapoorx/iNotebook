@@ -1,6 +1,8 @@
 import React, { useState } from 'react'
+import { useNavigate } from 'react-router-dom';
 
 export default function Login() {
+    const navigate = useNavigate()
     const [credentials, setCredentials] = useState({email: "", password: ""})
     const handleSubmit = async (e) => {
         e.preventDefault()
@@ -18,6 +20,7 @@ export default function Login() {
         console.log(resJson)
         if (resJson.success){
             localStorage.setItem("token", resJson.authToken)
+            navigate("/")
         }
     };
 
@@ -30,11 +33,11 @@ export default function Login() {
             <form onSubmit={handleSubmit}>
                 <div className="mb-3">
                     <label htmlFor="email" className="form-label">Email address</label>
-                    <input type="email" className="form-control" id="email" name='email' aria-describedby="emailHelp" value={credentials.email} onChange={handleChange}/>
+                    <input type="email" className="form-control" id="email" name='email' aria-describedby="emailHelp" value={credentials.email} onChange={handleChange} minLength={"5"}/>
                 </div>
                 <div className="mb-3">
                     <label htmlFor="password" className="form-label">Password</label>
-                    <input type="password" className="form-control" id="password" name='password' value={credentials.password} onChange={handleChange}/>
+                    <input type="password" className="form-control" id="password" name='password' value={credentials.password} onChange={handleChange} minLength={"5"}/>
                 </div>
                 <button type="submit" className="btn btn-dark">Submit</button>
             </form>
