@@ -9,6 +9,7 @@ export default function AddNote() {
     const handleClick = (e) => {
         e.preventDefault()
         addNote(note.title, note.description, note.tag)
+        
         setNote({ title: "", description: "", tag: "default" })
     }
 

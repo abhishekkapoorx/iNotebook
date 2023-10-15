@@ -12,7 +12,7 @@ export const NoteItem = (props) => {
                 <h5 className="card-title">{note.title}</h5>
                 <div className="d-flex align-items-center mb-3">
                     <h6 className="card-subtitle text-body-secondary me-2">{note.tag}</h6>
-                    <span className="material-symbols-outlined mx-2 pe-auto" onClick={() => deleteNote(note._id)}>
+                    <span className="material-symbols-outlined mx-2 pe-auto" onClick={() => {deleteNote(note._id); props.showAlert("Note Deleted Successfuly", "success")}}>
                         delete
                     </span>
                     <span className="material-symbols-outlined mx-2 pe-auto" onClick={() => updateNote(note)}>
